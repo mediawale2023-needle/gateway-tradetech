@@ -123,9 +123,9 @@ export default function OpportunityDetail() {
       <Sidebar />
       <main className="main-content bg-offwhite">
         {/* Header */}
-        <header className="bg-white border-b border-slate-200 px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <header className="bg-white border-b border-slate-200 px-4 md:px-8 py-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex items-start md:items-center gap-4">
               <Button
                 variant="ghost"
                 onClick={() => navigate(-1)}
@@ -146,7 +146,7 @@ export default function OpportunityDetail() {
             {isAdmin && (
               <div className="flex items-center gap-3">
                 <Select value={opportunity.status} onValueChange={handleStatusChange}>
-                  <SelectTrigger className="w-36" data-testid="status-select">
+                  <SelectTrigger className="w-full md:w-36" data-testid="status-select">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -172,7 +172,7 @@ export default function OpportunityDetail() {
 
         {/* Tariff & Geopolitical Warning Banner */}
         {opportunity.tariff_warnings?.length > 0 && (
-          <div className="bg-amber-50 border-b border-amber-200 px-8 py-4 flex items-start gap-3">
+          <div className="bg-amber-50 border-b border-amber-200 px-4 md:px-8 py-4 flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5" />
             <div>
               <h4 className="text-sm font-bold text-amber-900 uppercase tracking-wide">Geopolitical & Compliance Alert</h4>
@@ -185,10 +185,10 @@ export default function OpportunityDetail() {
           </div>
         )}
 
-        <div className="p-8">
-          <div className="grid grid-cols-12 gap-8">
+        <div className="p-4 md:p-8">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
             {/* Left Column - Demand Summary */}
-            <div className="col-span-5">
+            <div className="col-span-12 md:col-span-4 lg:col-span-5">
               <div className="premium-card p-6 rounded-sm">
                 <h2 className="text-xs uppercase tracking-wider text-slate-500 font-medium mb-6">
                   Demand Summary
@@ -355,7 +355,7 @@ export default function OpportunityDetail() {
             </div>
 
             {/* Center Column - Scores */}
-            <div className="col-span-3">
+            <div className="col-span-12 md:col-span-4 lg:col-span-3">
               <div className="premium-card p-6 rounded-sm">
                 <h2 className="text-xs uppercase tracking-wider text-slate-500 font-medium mb-6">
                   AI Analysis
@@ -445,7 +445,7 @@ export default function OpportunityDetail() {
             </div>
 
             {/* Right Column - Matched Exporters */}
-            <div className="col-span-4">
+            <div className="col-span-12 md:col-span-4 lg:col-span-4">
               {isAdmin && (
                 <>
                   <div className="premium-card p-6 rounded-sm mb-6">

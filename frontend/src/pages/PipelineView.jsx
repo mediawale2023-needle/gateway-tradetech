@@ -56,8 +56,8 @@ export default function PipelineView() {
       <Sidebar />
       <main className="main-content bg-offwhite">
         {/* Header */}
-        <header className="bg-white border-b border-slate-200 px-8 py-6">
-          <div className="flex items-center justify-between">
+        <header className="bg-white border-b border-slate-200 px-4 md:px-8 py-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
               <h1 className="font-display text-3xl font-bold text-slate-900 tracking-tight">
                 Deal Pipeline
@@ -76,9 +76,9 @@ export default function PipelineView() {
           </div>
         </header>
 
-        <div className="p-8">
+        <div className="p-4 md:p-8">
           {/* Stage Headers */}
-          <div className="flex items-center gap-2 mb-6">
+          <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
             {STAGES.map((stage, idx) => (
               <div key={stage} className="flex items-center">
                 <div className={`px-4 py-2 rounded-sm text-sm font-medium ${stageColors[stage]} border`}>
@@ -104,7 +104,8 @@ export default function PipelineView() {
               <p className="text-sm text-slate-400">Create deals from opportunity matches</p>
             </div>
           ) : (
-            <div className="grid grid-cols-6 gap-4" data-testid="pipeline-kanban">
+            <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+              <div className="grid grid-cols-6 gap-4 min-w-[1200px]" data-testid="pipeline-kanban">
               {STAGES.map((stage) => (
                 <div key={stage} className="pipeline-stage p-3">
                   <p className="text-xs uppercase tracking-wider text-slate-400 font-medium mb-3 px-1">
@@ -166,7 +167,8 @@ export default function PipelineView() {
                 </div>
               ))}
             </div>
-          )}
+          </div>
+        )}
 
           {/* Summary Stats */}
           {deals.length > 0 && (
@@ -174,7 +176,7 @@ export default function PipelineView() {
               <h3 className="text-xs uppercase tracking-wider text-slate-500 font-medium mb-4">
                 Pipeline Summary
               </h3>
-              <div className="grid grid-cols-6 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                 {STAGES.map((stage) => {
                   const count = getDealsByStage(stage).length;
                   const percentage = deals.length > 0 ? Math.round((count / deals.length) * 100) : 0;

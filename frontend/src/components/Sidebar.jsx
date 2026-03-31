@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useAuth } from "@/App";
 import { useNavigate, useLocation } from "react-router-dom";
 import { 
@@ -11,13 +12,16 @@ import {
   Wallet,
   ShieldCheck,
   CreditCard,
-  DollarSign
+  DollarSign,
+  Menu,
+  X
 } from "lucide-react";
 
 export default function Sidebar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
 
   const isAdmin = user?.role === "admin";
 
@@ -43,68 +47,110 @@ export default function Sidebar() {
     navigate("/login");
   };
 
+  const toggleSidebar = () => setIsOpen(!isOpen);
+  const closeSidebar = () => setIsOpen(false);
+
+  const handleNavClick = (path) => {
+    navigate(path);
+    closeSidebar();
+  };
+
   return (
-    <aside className="w-64 navy-sidebar h-screen flex flex-col sticky top-0">
-      {/* Logo */}
-      <div className="p-6 border-b border-slate-700">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-gold/20 rounded-sm flex items-center justify-center">
-            <span className="text-gold font-display font-bold text-lg">T</span>
+    <>
+      {/* Mobile Nav Header */}
+      <div className="mobile-nav-header">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-gold/20 rounded-sm flex items-center justify-center">
+            <span className="text-gold font-display font-bold">G</span>
           </div>
-          <div>
-            <h1 className="font-display text-lg font-semibold text-white">Gateway</h1>
-            <p className="text-xs text-slate-400 uppercase tracking-wider">
-              {isAdmin ? "Admin Portal" : "Exporter Portal"}
-            </p>
-          </div>
+          <span className="font-display font-semibold text-white">Gateway</span>
         </div>
-      </div>
-
-      {/* Navigation */}
-      <nav className="flex-1 p-4">
-        <ul className="space-y-1">
-          {links.map((link) => {
-            const isActive = location.pathname === link.path;
-            return (
-              <li key={link.path}>
-                <button
-                  onClick={() => navigate(link.path)}
-                  data-testid={`nav-${link.label.toLowerCase().replace(' ', '-')}`}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-sm transition-colors ${
-                    isActive 
-                      ? "bg-white/10 text-white" 
-                      : "text-slate-300 hover:bg-white/5 hover:text-white"
-                  }`}
-                >
-                  <link.icon className="w-5 h-5" strokeWidth={1.5} />
-                  <span className="font-medium">{link.label}</span>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
-
-      {/* User section */}
-      <div className="p-4 border-t border-slate-700">
-        <div className="flex items-center gap-3 px-4 py-3 mb-2">
-          <div className="w-8 h-8 bg-slate-600 rounded-full flex items-center justify-center">
-            <Building2 className="w-4 h-4 text-slate-300" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-white truncate">{user?.company_name}</p>
-            <p className="text-xs text-slate-400 truncate">{user?.email}</p>
-          </div>
-        </div>
-        <button
-          onClick={handleLogout}
-          data-testid="logout-btn"
-          className="w-full flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-white/5 hover:text-white rounded-sm transition-colors"
+        <button 
+          onClick={toggleSidebar}
+          className="p-2 text-slate-300 hover:text-white"
         >
-          <LogOut className="w-5 h-5" strokeWidth={1.5} />
-          <span className="font-medium">Sign Out</span>
+          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
-    </aside>
+
+      {/* Sidebar Overlay */}
+      {isOpen && (
+        <div 
+          className="sidebar-overlay lg:hidden" 
+          onClick={closeSidebar}
+        />
+      )}
+
+      {/* Sidebar aside */}
+      <aside className={`w-64 navy-sidebar h-screen flex flex-col sticky top-0 ${isOpen ? 'open' : ''}`}>
+        {/* Logo */}
+        <div className="p-6 border-b border-slate-700 flex justify-between items-center text-white">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 bg-gold/20 rounded-sm flex items-center justify-center">
+              <span className="text-gold font-display font-bold text-lg">G</span>
+            </div>
+            <div>
+              <h1 className="font-display text-lg font-semibold text-white">Gateway</h1>
+              <p className="text-xs text-slate-400 uppercase tracking-wider">
+                {isAdmin ? "Admin Portal" : "Exporter Portal"}
+              </p>
+            </div>
+          </div>
+          <button 
+            onClick={closeSidebar}
+            className="lg:hidden p-2 text-slate-400 hover:text-white"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 p-4 overflow-y-auto">
+          <ul className="space-y-1">
+            {links.map((link) => {
+              const isActive = location.pathname === link.path;
+              return (
+                <li key={link.path}>
+                  <button
+                    onClick={() => handleNavClick(link.path)}
+                    data-testid={`nav-${link.label.toLowerCase().replace(' ', '-')}`}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-sm transition-colors ${
+                      isActive 
+                        ? "bg-white/10 text-white" 
+                        : "text-slate-300 hover:bg-white/5 hover:text-white"
+                    }`}
+                  >
+                    <link.icon className="w-5 h-5" strokeWidth={1.5} />
+                    <span className="font-medium">{link.label}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        {/* User section */}
+        <div className="p-4 border-t border-slate-700">
+          <div className="flex items-center gap-3 px-4 py-3 mb-2">
+            <div className="w-8 h-8 bg-slate-600 rounded-full flex items-center justify-center">
+              <Building2 className="w-4 h-4 text-slate-300" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-white truncate">{user?.company_name}</p>
+              <p className="text-xs text-slate-400 truncate">{user?.email}</p>
+            </div>
+          </div>
+          <button
+            onClick={handleLogout}
+            data-testid="logout-btn"
+            className="w-full flex items-center gap-3 px-4 py-3 text-slate-300 hover:bg-white/5 hover:text-white rounded-sm transition-colors"
+          >
+            <LogOut className="w-5 h-5" strokeWidth={1.5} />
+            <span className="font-medium">Sign Out</span>
+          </button>
+        </div>
+      </aside>
+    </>
   );
 }
+

@@ -2,11 +2,58 @@
 .app-container {
     min-height: 100vh;
     display: flex;
+    flex-direction: row;
 }
 
 .main-content {
     flex: 1;
     overflow-x: hidden;
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .app-container {
+        flex-direction: column;
+    }
+    
+    .navy-sidebar {
+        position: fixed;
+        left: -100%;
+        top: 0;
+        z-index: 50;
+        transition: left 0.3s ease;
+        width: 280px !important;
+    }
+    
+    .navy-sidebar.open {
+        left: 0;
+    }
+    
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 40;
+    }
+}
+
+.mobile-nav-header {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .mobile-nav-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 1.5rem;
+        background: #0F172A;
+        color: white;
+        width: 100%;
+        position: sticky;
+        top: 0;
+        z-index: 30;
+    }
 }
 
 /* Login split screen */

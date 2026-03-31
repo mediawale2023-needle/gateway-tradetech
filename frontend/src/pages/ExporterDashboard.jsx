@@ -87,7 +87,7 @@ export default function ExporterDashboard() {
           </div>
         </header>
 
-        <div className="p-8">
+        <div className="p-4 md:p-8">
           {/* Profile Alert */}
           {!hasProfile && (
             <div className="premium-card p-4 rounded-sm mb-6 border-l-4 border-l-gold bg-amber-50">
@@ -108,7 +108,7 @@ export default function ExporterDashboard() {
           )}
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
             <div className="premium-card p-6 rounded-sm">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-blue-50 rounded-sm flex items-center justify-center">
@@ -146,7 +146,7 @@ export default function ExporterDashboard() {
 
           {/* Filters */}
           <div className="premium-card p-4 rounded-sm mb-6">
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center gap-4">
               <div className="flex-1 relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <Input
@@ -158,7 +158,7 @@ export default function ExporterDashboard() {
                 />
               </div>
               <Select value={sectorFilter} onValueChange={setSectorFilter}>
-                <SelectTrigger className="w-56 bg-white" data-testid="sector-filter">
+                <SelectTrigger className="w-full sm:w-56 bg-white" data-testid="sector-filter">
                   <SelectValue placeholder="All Sectors" />
                 </SelectTrigger>
                 <SelectContent>
@@ -198,7 +198,7 @@ export default function ExporterDashboard() {
           {myDeals.length > 0 && (
             <div className="mt-12">
               <h2 className="font-display text-xl font-semibold text-slate-900 mb-6">My Active Deals</h2>
-              <div className="premium-card rounded-sm overflow-hidden">
+              <div className="premium-card rounded-sm overflow-x-auto">
                 <table className="w-full">
                   <thead className="bg-slate-50 border-b border-slate-200">
                     <tr>
